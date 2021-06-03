@@ -1,6 +1,7 @@
-//import { navigate } from "gatsby";
+import { useHistory } from "react-router-dom";
 
 export const ClearSession = () => {
+  const history = useHistory();
   localStorage.clear();
-  //navigate("/");
+  history.push("/");
 };

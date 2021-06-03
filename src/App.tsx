@@ -6,13 +6,13 @@ import Start from "./components/Main/start";
 
 function App() {
   return (
-    <Layout>
-      <Router>
+    <Router>
+      <Layout>
         <Switch>
           <Route path="/:user?" component={Start} />
         </Switch>
-      </Router>
-    </Layout>
+      </Layout>
+    </Router>
   );
 }
 

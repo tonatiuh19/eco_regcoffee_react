@@ -34,7 +34,7 @@ const FanPage = ({ userName }: any) => {
   const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
   const currentTodos = userComments.slice(indexOfFirstTodo, indexOfLastTodo);
 
-  const todosPerPagePosts = 8;
+  const todosPerPagePosts = 5;
   const [activePagePosts, setCurrentPagePosts] = useState(1);
   const indexOfLastTodoPosts = activePagePosts * todosPerPagePosts;
   const indexOfFirstTodoPosts = indexOfLastTodoPosts - todosPerPagePosts;

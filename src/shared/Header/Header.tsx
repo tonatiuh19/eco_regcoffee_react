@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useHistory, Link } from "react-router-dom";
 import Logo from "../../resources/images/logo_full_grap.png";
 import LogoGold from "../../resources/images/logo_full.png";
 import "./styles/Header.css";
@@ -11,6 +11,7 @@ import { validateMail } from "../../resources/utilFunc/ValidationStrings";
 import { ImSad2 } from "react-icons/im";
 
 const Header = () => {
+  const history = useHistory();
   const [navBarTheme, setNavBarTheme] = useState(
     "navbar fixed-top navbar-expand-lg navbar-light bg-light"
   );
@@ -68,8 +69,8 @@ const Header = () => {
             setvalidMailSignIn(false);
             localStorage.setItem("08191993", x[0].id_user);
             localStorage.setItem("08191993UN", x[0].user_name);
-            //navigate("/" + x[0].user_name);
             document.getElementById("exitSignIn")!.click();
+            history.push("/" + x[0].user_name);
             setloading(false);
           } else if (x === 0) {
             setstringValidationSignIn("Correo o contraseña incorrectos");
@@ -107,7 +108,7 @@ const Header = () => {
             console.log(x);
             localStorage.setItem("08191993", x[0].id_user);
             localStorage.setItem("08191993UN", x[0].user_name);
-            //navigate("/" + usernameSignUp);
+            history.push("/" + usernameSignUp);
           } else if (x === 2) {
             setstringValidationSignUp("Este correo ya se encuentra registrado");
             setvalidMailSignUp(true);
@@ -150,6 +151,7 @@ const Header = () => {
     if (loggedInUser) {
       setLoggedIn(true);
       setusername(localStorage.getItem("08191993UN"));
+      console.log("entre", localStorage.getItem("08191993UN"));
     } else {
       setLoggedIn(false);
     }
@@ -169,13 +171,9 @@ const Header = () => {
       <header style={{ position: "absolute" }}>
         <nav className={navBarTheme}>
           <div className="container-fluid">
-            <a
-              className="navbar-brand"
-              href=""
-              //onClick={() => navigate("/")}
-            >
+            <Link to="/" className="navbar-brand">
               <img src={logo} width="200" className="img-fluid" />
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -204,7 +202,7 @@ const Header = () => {
                         className={pathIncludes(username)}
                         aria-current="page"
                         href=""
-                        //onClick={() => navigate("/" + username)}
+                        onClick={() => history.push("/" + username)}
                       >
                         Mi pagina
                       </a>
@@ -246,7 +244,10 @@ const Header = () => {
                           <a
                             className="dropdown-item"
                             href=""
-                            onClick={() => ClearSession()}
+                            onClick={() => {
+                              localStorage.clear();
+                              history.push("/");
+                            }}
                           >
                             <FaToggleOff /> Cerrar sesión
                           </a>
