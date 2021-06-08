@@ -58,17 +58,23 @@ if($method == 'POST'){
                         header('Content-Type: application/json');
                         echo $res;
                     } else {
-                        echo "0 results";
+                        $res = json_encode($array, JSON_NUMERIC_CHECK);
+                        header('Content-Type: application/json');
+                        echo $res;
                     }
 
                     
                 } else {
-                    echo "0 results";
+                    $res = json_encode($array, JSON_NUMERIC_CHECK);
+                    header('Content-Type: application/json');
+                    echo $res;
                 }
 
                 
             } else {
-                echo "0 results";
+                $res = json_encode($array, JSON_NUMERIC_CHECK);
+                header('Content-Type: application/json');
+                echo $res;
             }
 			
 		} else {

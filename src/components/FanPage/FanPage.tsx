@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BiCoffeeTogo, BiHappyHeartEyes } from "react-icons/bi";
+import { FaHeart } from "react-icons/fa";
 import Loading from "../../resources/utilFunc/Loading/Loading";
 import { getUserInfo } from "../../services/api.functions";
-import { decode_utf8 } from "../../resources/utilFunc/ValidationStrings";
+import {
+  decode_utf8,
+  isLoggedIn,
+} from "../../resources/utilFunc/ValidationStrings";
 import Pagination from "react-js-pagination";
 import "./styles/Main.css";
+import "./styles/usernameAnimation.css";
 
 import Extras from "./Extras";
 import Posts from "./Posts";
@@ -125,10 +130,11 @@ const FanPage = ({ userName }: any) => {
       .finally(() => {
         setloading(false);
       });
-
-    setTimeout(() => {
-      closeWelcomeAlert();
-    }, 2000); //miliseconds
+    if (isLoggedIn()) {
+      setTimeout(() => {
+        closeWelcomeAlert();
+      }, 2000); //miliseconds
+    }
   }, []);
 
   return (
@@ -137,21 +143,23 @@ const FanPage = ({ userName }: any) => {
         <div className="container h-100">
           <div className="row py-5">
             <div className="col-sm-12">
-              <div
-                className="alert alert-dark alert-dismissible fade show "
-                role="alert"
-              >
-                <strong>
-                  <BiCoffeeTogo /> ¡Bienvenido!
-                </strong>{" "}
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                  id="closeBtnWelcomeAlert"
-                ></button>
-              </div>
+              {isLoggedIn() ? (
+                <div
+                  className="alert alert-dark alert-dismissible fade show "
+                  role="alert"
+                >
+                  <strong>
+                    <BiCoffeeTogo /> ¡Bienvenido!
+                  </strong>{" "}
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                    id="closeBtnWelcomeAlert"
+                  ></button>
+                </div>
+              ) : null}
             </div>
             <div className="col-sm-7">
               <div className="container">
@@ -166,7 +174,11 @@ const FanPage = ({ userName }: any) => {
                 </div>
                 <div className="row text-center">
                   <div className="col-sm-12 ">
-                    <h2 className="fw-bolder">{userName}</h2>
+                    <div className="container-animation">
+                      <h2 className="container-animation-text">
+                        <span>{userName}</span>
+                      </h2>
+                    </div>
                   </div>
                   <div className="col-sm-12 ">
                     <h5 className="fw-light">
@@ -301,61 +313,85 @@ const FanPage = ({ userName }: any) => {
               <div className="col-8">
                 <div className="container">
                   <div className="row">
-                    {userExtras.map((x: any, index: number) => {
-                      return (
-                        <Extras
-                          key={index}
-                          index={index}
-                          title={x.title}
-                          quedan={x.quedan}
-                          subsciption={x.subsciption}
-                          description={x.description}
-                          price={x.price}
-                        ></Extras>
-                      );
-                    })}
+                    {userExtras.length === 0 ? (
+                      <div className="flex-container mt-2">
+                        <div className="flex-items">
+                          <div className="p-5 mb-4 bg-light rounded-3">
+                            <div className="container-fluid py-5">
+                              <h3 className="display-5 fw-bold">
+                                Gracias por tu apoyo{" "}
+                                <FaHeart className="text-danger" />
+                              </h3>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {userExtras.map((x: any, index: number) => {
+                          return (
+                            <Extras
+                              key={index}
+                              index={index}
+                              title={x.title}
+                              quedan={x.quedan}
+                              subsciption={x.subsciption}
+                              description={x.description}
+                              price={x.price}
+                            ></Extras>
+                          );
+                        })}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
               <div className="col-4">
                 <div className="container">
-                  <div className="row">
-                    <div className="col">
-                      <h5>
-                        Ultimas noticias de{" "}
-                        <span className="fw-bold">{userName}</span>:
-                      </h5>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="card">
-                        <div className="card-body">
-                          <div className="card-text ">
-                            {currentTodosPosts.map((x: any, index: number) => {
-                              return (
-                                <Posts
-                                  key={index}
-                                  index={index}
-                                  text={x.text}
-                                  date={x.date}
-                                ></Posts>
-                              );
-                            })}
-                            <div className="pagination">
-                              <Pagination
-                                activePage={activePagePosts}
-                                itemsCountPerPage={3}
-                                totalItemsCount={userPosts.length}
-                                pageRangeDisplayed={3}
-                                onChange={handlePageChangePosts}
-                              />
+                  {currentTodosPosts.length === 0 ? null : (
+                    <>
+                      <div className="row">
+                        <div className="col">
+                          <h5>
+                            Ultimas noticias de{" "}
+                            <span className="fw-bold">{userName}</span>:
+                          </h5>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="card">
+                            <div className="card-body">
+                              <div className="card-text ">
+                                {currentTodosPosts.map(
+                                  (x: any, index: number) => {
+                                    return (
+                                      <Posts
+                                        key={index}
+                                        index={index}
+                                        text={x.text}
+                                        date={x.date}
+                                      ></Posts>
+                                    );
+                                  }
+                                )}
+                                <div className="pagination">
+                                  <Pagination
+                                    activePage={activePagePosts}
+                                    itemsCountPerPage={3}
+                                    totalItemsCount={userPosts.length}
+                                    pageRangeDisplayed={3}
+                                    onChange={handlePageChangePosts}
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
+
                   <div className="row mt-3">
                     <div className="col">
                       <h5>Comentarios de Fans:</h5>
@@ -366,25 +402,39 @@ const FanPage = ({ userName }: any) => {
                       <div className="card">
                         <div className="card-body">
                           <div className="card-text ">
-                            {currentTodos.map((x: any, index: number) => {
-                              return (
-                                <Comments
-                                  key={index}
-                                  index={index}
-                                  note_fan={x.note_fan}
-                                  date={x.date}
-                                ></Comments>
-                              );
-                            })}
-                            <div className="pagination">
-                              <Pagination
-                                activePage={activePage}
-                                itemsCountPerPage={3}
-                                totalItemsCount={userComments.length}
-                                pageRangeDisplayed={3}
-                                onChange={handlePageChange}
-                              />
-                            </div>
+                            {
+                              <>
+                                {currentTodos.length === 0 ? (
+                                  <h5 className="fw-bold">
+                                    Puedes ser el primero en aparecer aquí
+                                  </h5>
+                                ) : (
+                                  <>
+                                    {currentTodos.map(
+                                      (x: any, index: number) => {
+                                        return (
+                                          <Comments
+                                            key={index}
+                                            index={index}
+                                            note_fan={x.note_fan}
+                                            date={x.date}
+                                          ></Comments>
+                                        );
+                                      }
+                                    )}
+                                    <div className="pagination">
+                                      <Pagination
+                                        activePage={activePage}
+                                        itemsCountPerPage={3}
+                                        totalItemsCount={userComments.length}
+                                        pageRangeDisplayed={3}
+                                        onChange={handlePageChange}
+                                      />
+                                    </div>
+                                  </>
+                                )}
+                              </>
+                            }
                           </div>
                         </div>
                       </div>

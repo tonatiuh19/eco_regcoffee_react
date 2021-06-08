@@ -4,7 +4,10 @@ import { FaGlassCheers } from "react-icons/fa";
 import { ImSad2 } from "react-icons/im";
 import CreatorImg from "../../resources/images/creator.png";
 import { checkUser } from "../../services/api.functions";
-import { validateMail } from "../../resources/utilFunc/ValidationStrings";
+import {
+  validateMail,
+  deleteSpecialChars,
+} from "../../resources/utilFunc/ValidationStrings";
 import { insertUser } from "../../services/api.functions";
 import "./styles/main.css";
 import Loading from "../../resources/utilFunc/Loading/Loading";
@@ -61,7 +64,11 @@ const SectionMain = () => {
     }
     setloading(true);
     console.log("aqui: ", username);
-    insertUser(username, mailSignUp, pwdSignUp)
+    insertUser(
+      deleteSpecialChars(username.trim()),
+      mailSignUp.trim(),
+      pwdSignUp.trim()
+    )
       .then((x) => {
         console.log(x);
         if (x !== 0) {

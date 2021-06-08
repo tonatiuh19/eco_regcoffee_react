@@ -7,7 +7,10 @@ import { signIn, checkUser, insertUser } from "../../services/api.functions";
 import Loading from "../../resources/utilFunc/Loading/Loading";
 import { FaToggleOff, FaTools, FaUserAstronaut } from "react-icons/fa";
 import { ClearSession } from "../../resources/utilFunc/ClearSession";
-import { validateMail } from "../../resources/utilFunc/ValidationStrings";
+import {
+  validateMail,
+  deleteSpecialChars,
+} from "../../resources/utilFunc/ValidationStrings";
 import { ImSad2 } from "react-icons/im";
 
 const Header = () => {
@@ -62,7 +65,6 @@ const Header = () => {
           if (x !== 0 && typeof x === "string") {
             setvalidMailSignIn(true);
             setstringValidationSignIn(x);
-            document.getElementById("exitSignIn")!.click();
             setloading(false);
           } else if (Array.isArray(x)) {
             setstringValidationSignIn("");
@@ -102,13 +104,18 @@ const Header = () => {
 
       setloading(true);
 
-      insertUser(usernameSignUp.trim(), mailSignUp.trim(), pwdSignUp.trim())
+      insertUser(
+        deleteSpecialChars(usernameSignUp.trim()),
+        mailSignUp.trim(),
+        pwdSignUp.trim()
+      )
         .then((x) => {
           if (x !== 0) {
             console.log(x);
             localStorage.setItem("08191993", x[0].id_user);
             localStorage.setItem("08191993UN", x[0].user_name);
             history.push("/" + usernameSignUp);
+            document.getElementById("exitSignUp")!.click();
           } else if (x === 2) {
             setstringValidationSignUp("Este correo ya se encuentra registrado");
             setvalidMailSignUp(true);
@@ -120,7 +127,6 @@ const Header = () => {
           }
         })
         .finally(() => {
-          document.getElementById("exitSignUp")!.click();
           setloading(false);
         });
     }
@@ -151,7 +157,6 @@ const Header = () => {
     if (loggedInUser) {
       setLoggedIn(true);
       setusername(localStorage.getItem("08191993UN"));
-      console.log("entre", localStorage.getItem("08191993UN"));
     } else {
       setLoggedIn(false);
     }
@@ -159,8 +164,8 @@ const Header = () => {
 
   const pathIncludes = (word: any) => {
     return window.location.href.includes(word)
-      ? "btn btn-outline-dark"
-      : "btn btn-light";
+      ? "nav-item-hover btn btn-outline-dark"
+      : "nav-item-hover btn btn-light";
   };
 
   useEffect(() => {
@@ -199,12 +204,23 @@ const Header = () => {
                   <>
                     <li className="nav-item">
                       <a
+                        className={pathIncludes("extras")}
+                        aria-current="page"
+                        href=""
+                        onClick={() => history.push("/extras")}
+                      >
+                        Mis extras
+                      </a>
+                    </li>
+
+                    <li className="nav-item">
+                      <a
                         className={pathIncludes(username)}
                         aria-current="page"
                         href=""
                         onClick={() => history.push("/" + username)}
                       >
-                        Mi pagina
+                        Mi página
                       </a>
                     </li>
                     <li className="nav-item dropdown dropstart">
