@@ -19,7 +19,9 @@ const ModalAdd = (props: any) => {
 
   const [isLimit, setisLimit] = useState(false);
   const [limit, setlimit] = useState(0);
-  const [subscriptionStatus, setsubscriptionStatus] = useState<any>("DEFAULT");
+  const [subscriptionStatus, setsubscriptionStatus] = useState(
+    props.isSubscription
+  );
 
   const [validTitle, setvalidTitle] = useState(false);
   const [validPrice, setvalidPrice] = useState(false);
@@ -40,17 +42,17 @@ const ModalAdd = (props: any) => {
     if (Number(props.limit) >= 1) {
       setlimit(Number(props.limit));
       setisLimit(true);
-
-      console.log("");
     } else {
       setlimit(0);
       setisLimit(false);
     }
 
     if (Number(props.isSubscription) === 1) {
-      setsubscriptionStatus(1);
-    } else {
-      setsubscriptionStatus(0);
+      setsubscriptionStatus("1");
+      setisSuscription(true);
+    } else if (Number(props.isSubscription) === 0) {
+      setsubscriptionStatus("0");
+      setisSuscription(false);
     }
   }, []);
 
@@ -153,6 +155,7 @@ const ModalAdd = (props: any) => {
                       <input
                         type="text"
                         className="form-control"
+                        defaultValue={title}
                         placeholder="¿Cual es el título de lo que ofreces?"
                         onChange={(e) => settitle(e.target.value)}
                       />
@@ -168,6 +171,7 @@ const ModalAdd = (props: any) => {
                         className="form-control"
                         placeholder="¿Cual es el precio?"
                         prefix="$"
+                        defaultValue={price}
                         decimalsLimit={2}
                         onValueChange={(value, name) => setprice(value)}
                       />
@@ -181,6 +185,7 @@ const ModalAdd = (props: any) => {
                   <div className="row">
                     <div className="mb-3">
                       <textarea
+                        defaultValue={description}
                         className="form-control"
                         placeholder="¿Que descripción le pondrias?"
                         rows={3}
@@ -197,6 +202,7 @@ const ModalAdd = (props: any) => {
                   <div className="row">
                     <div className="mb-3">
                       <textarea
+                        defaultValue={confirmation}
                         className="form-control"
                         placeholder="Escribe una confirmación una vez tu fan concrete la compra"
                         rows={3}
@@ -218,11 +224,11 @@ const ModalAdd = (props: any) => {
                         defaultValue={subscriptionStatus}
                         onChange={(e) => changeSuscription(e)}
                       >
-                        <option value="DEFAULT" disabled>
+                        <option value="" disabled>
                           ¿Esto es una suscripción mensual?
                         </option>
-                        <option value={1}>Si</option>
-                        <option value={0}>No</option>
+                        <option value={"1"}>Si</option>
+                        <option value={"0"}>No</option>
                       </select>
                       {isSuscription ? (
                         <span className="badge bg-success mt-1">
@@ -235,6 +241,7 @@ const ModalAdd = (props: any) => {
                   <div className="row">
                     <div className="mb-3">
                       <input
+                        defaultValue={question}
                         type="text"
                         className="form-control"
                         placeholder="Haz una pregunta a tu fan (opcional)"
