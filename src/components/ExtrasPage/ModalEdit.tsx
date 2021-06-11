@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./styles/toggle.css";
-import CurrencyInput, { formatValue } from "react-currency-input-field";
-import {
-  FaExclamationCircle,
-  FaQuestionCircle,
-  FaPlusCircle,
-} from "react-icons/fa";
+import CurrencyInput from "react-currency-input-field";
+import { FaExclamationCircle, FaQuestionCircle } from "react-icons/fa";
+import { TiPencil } from "react-icons/ti";
 import Loading from "../../resources/utilFunc/Loading/Loading";
-import { insertExtra } from "../../services/api.functions";
+import { editExtra } from "../../services/api.functions";
 
-const ModalAdd = (props: any) => {
+const ModalEdit = (props: any) => {
   const [isSuscription, setisSuscription] = useState(false);
   const [title, settitle] = useState(props.titleE);
   const [price, setprice] = useState<any>(props.price);
@@ -90,8 +87,9 @@ const ModalAdd = (props: any) => {
       setvalidConfirmation(false);
     }
 
-    insertExtra(
+    editExtra(
       Number(localStorage.getItem("08191993")),
+      props.id_extra,
       title,
       price,
       description,
@@ -103,7 +101,7 @@ const ModalAdd = (props: any) => {
     )
       .then((x) => {
         if (x === 1) {
-          document.getElementById("exitModal" + props.id)!.click();
+          document.getElementById("exitModalEdit" + props.id)!.click();
           props.onChange();
         }
       })
@@ -117,16 +115,15 @@ const ModalAdd = (props: any) => {
   return (
     <>
       <button
-        className={"btn " + props.buttonClass}
-        type="button"
+        className="btn btn-outline-warning btn-sm"
         data-bs-toggle="modal"
-        data-bs-target={"#addExtra" + props.id}
+        data-bs-target={"#editExtra" + props.id}
       >
-        <FaPlusCircle /> {props.title}
+        <TiPencil />
       </button>
       <div
         className="modal fade"
-        id={"addExtra" + props.id}
+        id={"editExtra" + props.id}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -302,7 +299,7 @@ const ModalAdd = (props: any) => {
               <button
                 type="button"
                 className="exitModal"
-                id={"exitModal" + props.id}
+                id={"exitModalEdit" + props.id}
                 data-bs-dismiss="modal"
               ></button>
             </div>
@@ -313,4 +310,4 @@ const ModalAdd = (props: any) => {
   );
 };
 
-export default ModalAdd;
+export default ModalEdit;

@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 import { userExist } from "../../services/api.functions";
 import { isLoggedIn } from "../../resources/utilFunc/ValidationStrings";
 import ExtrasPage from "../ExtrasPage/ExtrasPage";
+import PostsPage from "../PostsPage/PostsPage";
 
 const Start = () => {
   const { user }: any = useParams();
@@ -43,6 +44,12 @@ const Start = () => {
         return (
           <div>
             <ExtrasPage></ExtrasPage>
+          </div>
+        );
+      case "posts":
+        return (
+          <div>
+            <PostsPage></PostsPage>
           </div>
         );
       case undefined:

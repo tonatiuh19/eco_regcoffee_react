@@ -13,18 +13,11 @@ if($method == 'POST'){
 
 	if ($params['idUser']) {
         $idUser = $params['idUser'];
-		$title = $params['title'];
-        $price = $params['price'];
-        $description = $params['description'];
-        $confirmation = $params['confirmation'];
-        $suscription = $params['suscription'];
-        $suscriptionId = $params['suscriptionId'];
-        $question = $params['question'];
-        $limit = $params['limit'];
+		$text = $params['text'];
         $todayVisit = date("Y-m-d H:i:s");
 
-        $sql = "INSERT INTO extras (title, description, confirmation, id_user, limit_slots, price, question, subsciption, subsciption_id, active, date)
-        VALUES ('$title', '$description', '$confirmation', '$idUser', '$limit', '$price', '$question', '$suscription', '$suscriptionId', '3', '$todayVisit')";
+        $sql = "INSERT INTO users_posts (id_user, text, date)
+        VALUES ('$idUser', '$text', '$todayVisit')";
 
         if ($conn->query($sql) === TRUE) {
             echo "1";

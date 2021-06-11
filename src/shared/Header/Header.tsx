@@ -204,6 +204,16 @@ const Header = () => {
                   <>
                     <li className="nav-item">
                       <a
+                        className={pathIncludes("posts")}
+                        aria-current="page"
+                        href=""
+                        onClick={() => history.push("/posts")}
+                      >
+                        Mis posts
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a
                         className={pathIncludes("extras")}
                         aria-current="page"
                         href=""

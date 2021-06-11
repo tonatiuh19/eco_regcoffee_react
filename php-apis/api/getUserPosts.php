@@ -13,7 +13,7 @@ if($method == 'POST'){
 	if ($params['username']) {
 		$username = $params['username'];
 
-		$sql = "SELECT a.id_extra, a.title, a.description, a.confirmation, a.id_user, a.limit_slots, a.price, a.question, a.subsciption, a.subsciption_id, a.active, a.date FROM extras as a INNER JOIN users as b on b.id_user=a.id_user WHERE b.user_name='".$username."' and (a.active=1 or a.active=3)";
+		$sql = "SELECT a.id_users_posts, a.is_deleted, a.text, a.date FROM users_posts as a INNER JOIN users as b on a.id_user=b.id_user WHERE a.is_deleted=0 and b.user_name='".$username."'";
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0) {
 			//echo 'Hola';

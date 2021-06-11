@@ -25,3 +25,7 @@ export const isLoggedIn = () => {
 export const getUserName = () => {
   return localStorage.getItem("08191993UN") || "";
 };
+
+export const geIdtUser = () => {
+  return Number(localStorage.getItem("08191993") || "");
+};

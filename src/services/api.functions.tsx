@@ -134,3 +134,84 @@ export const insertExtra = async (
     return `😱 Request failed: ${e}`;
   }
 };
+
+export const editExtra = async (
+  idUser: number,
+  id_extra: number,
+  title: string,
+  price: string,
+  description: string,
+  confirmation: string,
+  suscription: string,
+  suscriptionId: string,
+  limit: number,
+  question: string
+) => {
+  try {
+    const response = await axios.post(server + "editExtra.php", {
+      idUser: idUser,
+      id_extra: id_extra,
+      title: title,
+      price: price,
+      description: description,
+      confirmation: confirmation,
+      suscription: suscription,
+      suscriptionId: suscriptionId,
+      limit: limit,
+      question: question,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};
+
+export const deactivateExtra = async (id_extra: number) => {
+  try {
+    const response = await axios.post(server + "deactivateExtra.php", {
+      id_extra: id_extra,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};
+
+export const getUserPosts = async (username: string) => {
+  try {
+    const response = await axios.post(server + "getUserPosts.php", {
+      username: username,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};
+
+export const insertPost = async (idUser: number, text: string) => {
+  try {
+    const response = await axios.post(server + "insertPost.php", {
+      idUser: idUser,
+      text: text,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};

@@ -12,7 +12,7 @@ const ExtrasPage = () => {
   const [extras, setextras] = useState<any>([]);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState(false);
-  //Form new extra
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     handleExtrasService();
@@ -24,15 +24,14 @@ const ExtrasPage = () => {
       .then((x) => {
         if (x.constructor === Array) {
           setextras(x);
-          console.log("aqui");
-        } else {
+          setloading(false);
+        } else if (x !== 0) {
           seterror(true);
+          setloading(false);
         }
       })
       .catch(() => seterror(true))
-      .finally(() => {
-        setloading(false);
-      });
+      .finally(() => {});
   };
 
   if (loading) {
@@ -208,8 +207,15 @@ const ExtrasPage = () => {
             <div className="py-3">
               <div className="container">
                 <div className="row">
-                  {extras.map((x: any) => {
-                    return <CardExtra content={x}></CardExtra>;
+                  {extras.map((x: any, index: number) => {
+                    return (
+                      <CardExtra
+                        content={x}
+                        index={index}
+                        key={index}
+                        onChange={handleExtrasService}
+                      ></CardExtra>
+                    );
                   })}
                 </div>
               </div>
