@@ -13,7 +13,7 @@ if($method == 'POST'){
 	if ($params['username']) {
 		$username = $params['username'];
 
-		$sql = "SELECT a.id_users_posts, a.is_deleted, a.text, a.date FROM users_posts as a INNER JOIN users as b on a.id_user=b.id_user WHERE a.is_deleted=0 and b.user_name='".$username."'";
+		$sql = "SELECT a.id_users_posts, a.is_deleted, a.text, a.date FROM users_posts as a INNER JOIN users as b on a.id_user=b.id_user WHERE a.is_deleted=0 and b.user_name='".$username."' ORDER BY a.date desc";
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0) {
 			//echo 'Hola';

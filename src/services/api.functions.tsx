@@ -215,3 +215,39 @@ export const insertPost = async (idUser: number, text: string) => {
     return `😱 Request failed: ${e}`;
   }
 };
+
+export const deactivatePost = async (id_users_posts: number) => {
+  try {
+    const response = await axios.post(server + "deactivatePost.php", {
+      id_users_posts: id_users_posts,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};
+
+export const editPost = async (
+  idUser: number,
+  text: string,
+  id_users_posts: number
+) => {
+  try {
+    const response = await axios.post(server + "editPost.php", {
+      idUser: idUser,
+      text: text,
+      id_users_posts: id_users_posts,
+    });
+    if (response.data === 0) {
+      return 0;
+    } else {
+      return response.data;
+    }
+  } catch (e) {
+    return `😱 Request failed: ${e}`;
+  }
+};
